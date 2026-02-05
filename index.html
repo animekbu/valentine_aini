@@ -244,7 +244,6 @@
 
     <button id="backToTop">↑</button>
 
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
         let noClicks = 0;
         const yesBtn = document.getElementById('yesBtn');
@@ -291,9 +290,7 @@
         yesBtn.addEventListener('click', () => {
             proposal.classList.add('hidden');
             celebration.classList.remove('hidden');
-            if (typeof confetti !== 'undefined') {
-                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-            }
+            // Simple celebration without confetti
             setTimeout(() => {
                 celebration.classList.add('hidden');
                 gifts.classList.remove('hidden');
@@ -404,4 +401,20 @@
                         <p>Dear Aini,</p>
                         <p>I don’t know what the future looks like for us.</p>
                         <p>It could be the dream of our lives.<br>Or it could be the end of a dream.</p>
-                        <p
+                        <p>Either one is okay—<br>as long as I’m with you,<br>as long as I’m living the moment with you.</p>
+                    `;
+                } else if (giftNum == 10) {
+                    html = `
+                        <h2>🎁 Gift 10 — We Will Meet</h2>
+                        <p>Dear Aini,</p>
+                        <p>One day, we will meet.</p>
+                        <p>Maybe not today.<br>But that day will come.</p>
+                        <p>Even if we separate.<br>Even if we’re not together anymore.</p>
+                        <p>We must meet at least once.</p>
+                    `;
+                } else if (giftNum == 11) {
+                    html = `
+                        <h2>🎁 Gift 11 — Healing (Final Letter)</h2>
+                        <p>Dear Aini,</p>
+                        <p>Oh… Ais.</p>
+                        <p>You were the best thing I ever hoped for.<br>You came at the right time—<br>when I was desperate,<br>when everything in my life was falling apart.</
