@@ -246,7 +246,7 @@
         startSounds.addEventListener('click', () => {
             ambianceAudio = new Audio('music/ambiance.mp3');
             ambianceAudio.loop = true;
-            ambianceAudio.volume = 0.1; // Much lower ambiance volume
+            ambianceAudio.volume = 0.05; // Much lower ambiance volume
             ambianceAudio.play().catch(e => console.log('Ambiance blocked:', e));
             startSounds.style.display = 'none';
         });
@@ -301,7 +301,7 @@
                 currentDubAudio.currentTime = 0;
             }
             currentDubAudio = new Audio(`music/Valentines${giftNum}.mp3`);
-            currentDubAudio.volume = 1.0; // Max dub volume
+            currentDubAudio.volume = 2.0; // Max dub volume
             currentDubAudio.play().catch(e => console.log('Dub blocked:', e));
             let html = '';
             if (giftNum == 1) {
