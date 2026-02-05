@@ -154,14 +154,10 @@
     </style>
 </head>
 <body>
-    <!-- Background Ambiance Audio -->
-    <audio id="ambiance" loop autoplay>
-        <source src="sounds/ambiance.mp3" type="audio/mpeg">
-    </audio>
-
     <!-- Page 1: Question -->
     <div id="page1" class="page active">
         <h1>Will you be my Valentine? 💖</h1>
+        <button id="startSounds">Start Sounds 🔊</button>
         <button id="yesBtn">YES 😍</button>
         <button id="noBtn">NO 😒</button>
     </div>
@@ -206,10 +202,12 @@
     <script>
         let noClicks = 0;
         let currentGift = 1;
+        let ambianceAudio;
         const page1 = document.getElementById('page1');
         const page2 = document.getElementById('page2');
         const yesBtn = document.getElementById('yesBtn');
         const noBtn = document.getElementById('noBtn');
+        const startSounds = document.getElementById('startSounds');
         const modal = document.getElementById('modal');
         const letterContent = document.getElementById('letterContent');
         const nextGift = document.getElementById('nextGift');
@@ -240,8 +238,16 @@
         // Sound functions
         function playSound(src) {
             const audio = new Audio(src);
-            audio.play();
+            audio.play().catch(e => console.log('Sound blocked:', e));
         }
+
+        // Start sounds button
+        startSounds.addEventListener('click', () => {
+            ambianceAudio = new Audio('music/ambiance.mp3');
+            ambianceAudio.loop = true;
+            ambianceAudio.play().catch(e => console.log('Ambiance blocked:', e));
+            startSounds.style.display = 'none';
+        });
 
         // Page 1: NO makes YES bigger
         noBtn.addEventListener('click', () => {
@@ -263,7 +269,7 @@
 
         // Gift overlay click
         giftOverlay.addEventListener('click', () => {
-            playSound('sounds/open.mp3'); // Open sound
+            playSound('music/open.mp3');
             modal.style.display = 'flex';
             createConfetti();
             showLetter(currentGift);
@@ -271,7 +277,7 @@
 
         // Next gift button
         nextGiftBtn.addEventListener('click', () => {
-            playSound('sounds/woosh.mp3'); // Woosh sound
+            playSound('music/woosh.mp3');
             currentGift++;
             if (currentGift <= 11) {
                 showLetter(currentGift);
@@ -392,7 +398,6 @@
                 `;
             }
             letterContent.innerHTML = html;
-            // Show next gift button after 1.5 seconds
             if (currentGift < 11) {
                 setTimeout(() => {
                     nextGift.style.display = 'block';
