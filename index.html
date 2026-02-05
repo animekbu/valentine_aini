@@ -246,7 +246,7 @@
         startSounds.addEventListener('click', () => {
             ambianceAudio = new Audio('music/ambiance.mp3');
             ambianceAudio.loop = true;
-            ambianceAudio.volume = 0.3; // Lower ambiance volume
+            ambianceAudio.volume = 0.1; // Lower ambiance volume
             ambianceAudio.play().catch(e => console.log('Ambiance blocked:', e));
             startSounds.style.display = 'none';
         });
