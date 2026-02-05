@@ -203,6 +203,7 @@
         let noClicks = 0;
         let currentGift = 1;
         let ambianceAudio;
+        let currentDubAudio;
         const page1 = document.getElementById('page1');
         const page2 = document.getElementById('page2');
         const yesBtn = document.getElementById('yesBtn');
@@ -277,6 +278,10 @@
 
         // Next gift button
         nextGiftBtn.addEventListener('click', () => {
+            if (currentDubAudio) {
+                currentDubAudio.pause();
+                currentDubAudio.currentTime = 0;
+            }
             playSound('music/woosh.mp3');
             currentGift++;
             if (currentGift <= 11) {
@@ -290,6 +295,12 @@
         // Show letter function
         function showLetter(giftNum) {
             nextGift.style.display = 'none';
+            if (currentDubAudio) {
+                currentDubAudio.pause();
+                currentDubAudio.currentTime = 0;
+            }
+            currentDubAudio = new Audio(`music/Valentines${giftNum}.mp3`);
+            currentDubAudio.play().catch(e => console.log('Dub blocked:', e));
             let html = '';
             if (giftNum == 1) {
                 html = `
@@ -405,5 +416,4 @@
             }
         }
     </script>
-</body>
-</html>
+</body
