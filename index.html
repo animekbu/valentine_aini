@@ -64,21 +64,35 @@
         .top-right { top: 20px; right: 20px; transform: rotate(5deg); }
         .bottom-left { bottom: 20px; left: 20px; transform: rotate(3deg); }
         .bottom-right { bottom: 20px; right: 20px; transform: rotate(-3deg); }
+        .gifts {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin: 50px 0;
+        }
         .gift {
-            width: 200px;
-            height: 200px;
+            width: 150px;
+            height: 150px;
             background: #ff69b4;
             border-radius: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            font-size: 3em;
-            margin: 50px auto;
+            font-size: 2em;
             transition: transform 0.3s;
         }
         .gift:hover {
             transform: scale(1.1);
+        }
+        .gift.opened {
+            background: #ffb3d9;
+            animation: bounce 0.5s;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
         }
         .letter {
             display: none;
@@ -93,6 +107,7 @@
         @media (max-width: 600px) {
             .polaroid { width: 120px; height: 150px; }
             button { font-size: 1.2em; padding: 10px 20px; }
+            .gift { width: 120px; height: 120px; }
         }
     </style>
 </head>
@@ -104,7 +119,7 @@
         <button id="noBtn">NO 😒</button>
     </div>
 
-    <!-- Page 2: Photos and Gift -->
+    <!-- Page 2: Photos and Gifts -->
     <div id="page2" class="page">
         <h1>Our Memories & Gifts 💕</h1>
         
@@ -126,25 +141,23 @@
             <p>Confession day</p>
         </div>
         
-        <!-- Clickable Gift Box -->
-        <div class="gift" id="giftBox">🎁</div>
-        
-        <!-- Hidden Letter -->
-        <div class="letter" id="letter">
-            <h2>Dear Aini,</h2>
-            <p>10 November, 03:00. I met you on Discord. You were there with your friends, playing together, and I somehow joined you guys. Everyone was so friendly. We played Minecraft, laughed, and I tried to play some music… But I accidentally played a moaning sound. I panicked. Left immediately. Still embarrassing. Still funny.</p>
-            <p>That night felt simple, but somehow unforgettable. I didn’t know it then, but that moment became the start of something special.</p>
-            <p>If I didn’t join Discord that day, If you guys didn’t play Minecraft, If I didn’t come back after that embarrassing moment, If I didn’t feel guilty enough to return— This part of my life might never have existed. Yet somehow, all of it happened. And here we are today. Maybe it’s coincidence. Maybe it’s fate. Either way— I’m grateful. Thank you, Ais 🤍</p>
-            <p>You don’t even realize it, but you make things feel lighter. Bad days don’t feel as heavy. Silence doesn’t feel awkward. Being myself feels safe. That’s rare. And I don’t take it for granted.</p>
-            <p>We’re not always in the same place. Sometimes not even in the same time. But I still feel close to you. Through screens, through words, through late nights. Maybe distance exists. But so does us. And I think we’re doing okay.</p>
-            <p>Do you remember that day? 27 January. It still hurts when I think about it. We almost broke up. But you opened up. I didn’t know what to say. I didn’t know how I could say something like that. I’m sorry, Ais. Truly.</p>
-            <p>Your favorite food: Ikan asam pedas 😜 My favorite food: Oseng kangkung ☺ Simple things. But somehow, it feels like us.</p>
-            <p>31 January 2025. A new year. In a game called “Write a Letter”, you confessed to me. Not dramatic. Not perfect. Just honest. And that made it unforgettable.</p>
-            <p>Our Favorite Song “Oslo” — Matthew Hall. Soft. Calm. Comforting. This song reminds me of you. Like a memory that keeps playing, over and over.</p>
-            <p>I don’t know what the future looks like for us. It could be the dream of our lives. Or it could be the end of a dream. Either one is okay— as long as I’m with you, as long as I’m living the moment with you.</p>
-            <p>One day, we will meet. Maybe not today. But that day will come. Even if we separate. Even if we’re not together anymore. We must meet at least once.</p>
-            <p>Oh… Ais. You were the best thing I ever hoped for. You came at the right time— when I was desperate, when everything in my life was falling apart. My life was going sideways. Then you came. You fixed me. You made me positive again. Let’s wait. 1 September 2026 ISI Yogyakarta ☺</p>
+        <!-- 11 Gift Boxes -->
+        <div class="gifts">
+            <div class="gift" data-gift="1">🎁</div>
+            <div class="gift" data-gift="2">🎁</div>
+            <div class="gift" data-gift="3">🎁</div>
+            <div class="gift" data-gift="4">🎁</div>
+            <div class="gift" data-gift="5">🎁</div>
+            <div class="gift" data-gift="6">🎁</div>
+            <div class="gift" data-gift="7">🎁</div>
+            <div class="gift" data-gift="8">🎁</div>
+            <div class="gift" data-gift="9">🎁</div>
+            <div class="gift" data-gift="10">🎁</div>
+            <div class="gift" data-gift="11">🎁</div>
         </div>
+        
+        <!-- Letter Display Area -->
+        <div class="letter" id="letter"></div>
     </div>
 
     <script>
@@ -153,7 +166,7 @@
         const page2 = document.getElementById('page2');
         const yesBtn = document.getElementById('yesBtn');
         const noBtn = document.getElementById('noBtn');
-        const giftBox = document.getElementById('giftBox');
+        const giftBoxes = document.querySelectorAll('.gift');
         const letter = document.getElementById('letter');
 
         // Page 1: NO makes YES bigger
@@ -169,15 +182,117 @@
             page2.classList.add('active');
         });
 
-        // Page 2: Gift click reveals letter
-        giftBox.addEventListener('click', () => {
-            letter.style.display = 'block';
-            giftBox.style.display = 'none'; // Hide gift after click
+        // Page 2: Gift clicks reveal individual letters
+        giftBoxes.forEach(box => {
+            box.addEventListener('click', () => {
+                const giftNum = box.dataset.gift;
+                box.classList.add('opened');
+                letter.style.display = 'block';
+                let html = '';
+                if (giftNum == 1) {
+                    html = `
+                        <h2>🎁 Gift 1 — The Beginning</h2>
+                        <p>Dear Aini,</p>
+                        <p>10 November, 03:00.<br>I met you on Discord.</p>
+                        <p>You were there with your friends, playing together, and I somehow joined you guys.<br>Everyone was so friendly. We played Minecraft, laughed, and I tried to play some music…</p>
+                        <p>But I accidentally played a moaning sound.<br>I panicked. Left immediately.</p>
+                        <p>Still embarrassing. Still funny.</p>
+                        <p>That night felt simple, but somehow unforgettable.<br>I didn’t know it then, but that moment became the start of something special.</p>
+                    `;
+                } else if (giftNum == 2) {
+                    html = `
+                        <h2>🎁 Gift 2 — Fate</h2>
+                        <p>Dear Aini,</p>
+                        <p>If I didn’t join Discord that day,<br>If you guys didn’t play Minecraft,<br>If I didn’t come back after that embarrassing moment,<br>If I didn’t feel guilty enough to return—</p>
+                        <p>This part of my life might never have existed.</p>
+                        <p>Yet somehow, all of it happened.<br>And here we are today.</p>
+                        <p>Maybe it’s coincidence.<br>Maybe it’s fate.</p>
+                        <p>Either way—<br>I’m grateful.</p>
+                        <p>Thank you, Ais 🤍</p>
+                    `;
+                } else if (giftNum == 3) {
+                    html = `
+                        <h2>🎁 Gift 3 — Comfort</h2>
+                        <p>Dear Aini,</p>
+                        <p>You don’t even realize it,<br>but you make things feel lighter.</p>
+                        <p>Bad days don’t feel as heavy.<br>Silence doesn’t feel awkward.<br>Being myself feels safe.</p>
+                        <p>That’s rare.<br>And I don’t take it for granted.</p>
+                    `;
+                } else if (giftNum == 4) {
+                    html = `
+                        <h2>🎁 Gift 4 — Distance</h2>
+                        <p>Dear Ais,</p>
+                        <p>We’re not always in the same place.<br>Sometimes not even in the same time.</p>
+                        <p>But I still feel close to you.<br>Through screens, through words, through late nights.</p>
+                        <p>Maybe distance exists.<br>But so does us.</p>
+                        <p>And I think we’re doing okay.</p>
+                    `;
+                } else if (giftNum == 5) {
+                    html = `
+                        <h2>🎁 Gift 5 — Almost Losing You</h2>
+                        <p>Dear Ais,</p>
+                        <p>Do you remember that day?<br>27 January.</p>
+                        <p>It still hurts when I think about it.</p>
+                        <p>We almost broke up.<br>But you opened up.</p>
+                        <p>I didn’t know what to say.<br>I didn’t know how I could say something like that.</p>
+                        <p>I’m sorry, Ais.<br>Truly.</p>
+                    `;
+                } else if (giftNum == 6) {
+                    html = `
+                        <h2>🎁 Gift 6 — Our Favorite Food 😋</h2>
+                        <p>Your favorite food:<br>Ikan asam pedas 😜</p>
+                        <p>My favorite food:<br>Oseng kangkung ☺</p>
+                        <p>Simple things.<br>But somehow, it feels like us.</p>
+                    `;
+                } else if (giftNum == 7) {
+                    html = `
+                        <h2>🎁 Gift 7 — Confession Memory</h2>
+                        <p>Dear Ais,</p>
+                        <p>31 January 2025.<br>A new year.</p>
+                        <p>In a game called “Write a Letter”,<br>you confessed to me.</p>
+                        <p>Not dramatic.<br>Not perfect.</p>
+                        <p>Just honest.</p>
+                        <p>And that made it unforgettable.</p>
+                    `;
+                } else if (giftNum == 8) {
+                    html = `
+                        <h2>🎁 Gift 8 — Our Song 🎶</h2>
+                        <p>Our Favorite Song<br>“Oslo” — Matthew Hall</p>
+                        <p>Soft. Calm. Comforting.</p>
+                        <p>This song reminds me of you.<br>Like a memory that keeps playing,<br>over and over.</p>
+                    `;
+                } else if (giftNum == 9) {
+                    html = `
+                        <h2>🎁 Gift 9 — The Future</h2>
+                        <p>Dear Aini,</p>
+                        <p>I don’t know what the future looks like for us.</p>
+                        <p>It could be the dream of our lives.<br>Or it could be the end of a dream.</p>
+                        <p>Either one is okay—<br>as long as I’m with you,<br>as long as I’m living the moment with you.</p>
+                    `;
+                } else if (giftNum == 10) {
+                    html = `
+                        <h2>🎁 Gift 10 — We Will Meet</h2>
+                        <p>Dear Aini,</p>
+                        <p>One day, we will meet.</p>
+                        <p>Maybe not today.<br>But that day will come.</p>
+                        <p>Even if we separate.<br>Even if we’re not together anymore.</p>
+                        <p>We must meet at least once.</p>
+                    `;
+                } else if (giftNum == 11) {
+                    html = `
+                        <h2>🎁 Gift 11 — Healing (Final Letter)</h2>
+                        <p>Dear Aini,</p>
+                        <p>Oh… Ais.</p>
+                        <p>You were the best thing I ever hoped for.<br>You came at the right time—<br>when I was desperate,<br>when everything in my life was falling apart.</p>
+                        <p>My life was going sideways.</p>
+                        <p>Then you came.<br>You fixed me.<br>You made me positive again.</p>
+                        <p>Let’s wait.</p>
+                        <p>1 September 2026<br>ISI Yogyakarta ☺</p>
+                    `;
+                }
+                letter.innerHTML = html;
+            });
         });
     </script>
 </body>
 </html>
-                        <h2>🎁 Gift 11 — Healing (Final Letter)</h2>
-                        <p>Dear Aini,</p>
-                        <p>Oh… Ais.</p>
-                        <p>You were the best thing I ever hoped for.<br>You came at the right time—<br>when I was desperate,<br>when everything in my life was falling apart.</
