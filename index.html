@@ -300,9 +300,9 @@
                 currentDubAudio.pause();
                 currentDubAudio.currentTime = 0;
   }
-            currentDubAudio = new Audio(`music/Valentines${giftNum}.mp3`);
-            currentDubAudio.volume = 2.0; // Louder dub volume
-            currentDubAudio.play().catch(e => console.log('Dub blocked:', e));
+        currentDubAudio = new Audio(`music/Valentines${giftNum}.mp3`);
+        currentDubAudio.volume = 2.0; // Max dub volume
+        currentDubAudio.play().catch(e => console.log('Dub blocked:', e));
             let html = '';
             if (giftNum == 1) {
                 html = `
