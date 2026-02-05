@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -161,269 +163,245 @@
         <button id="yesBtn">YES 😍</button>
         <button id="noBtn">NO 😒</button>
     </div>
+<!-- Page 2: Photos and Overlay Gifts -->
+<div id="page2" class="page">
+    <h1>Our Memories & Gifts 💕</h1>
+<!-- Polaroid Photos in Corners -->
+<div class="polaroid top-left">
+    <img src="photos/photo1.jpg" alt="Memory 1">
+    <p>Our first chat</p>
+</div>
+<div class="polaroid top-right">
+    <img src="photos/photo2.jpg" alt="Memory 2">
+    <p>Minecraft fun</p>
+</div>
+<div class="polaroid bottom-left">
+    <img src="photos/photo3.jpg" alt="Memory 3">
+    <p>Late nights</p>
+</div>
+<div class="polaroid bottom-right">
+    <img src="photos/photo4.jpg" alt="Memory 4">
+    <p>Confession day</p>
+</div>
 
-    <!-- Page 2: Photos and Overlay Gifts -->
-    <div id="page2" class="page">
-        <h1>Our Memories & Gifts 💕</h1>
-        
-        <!-- Polaroid Photos in Corners -->
-        <div class="polaroid top-left">
-            <img src="photos/photo1.jpg" alt="Memory 1">
-            <p>Our first chat</p>
-        </div>
-        <div class="polaroid top-right">
-            <img src="photos/photo2.jpg" alt="Memory 2">
-            <p>Minecraft fun</p>
-        </div>
-        <div class="polaroid bottom-left">
-            <img src="photos/photo3.jpg" alt="Memory 3">
-            <p>Late nights</p>
-        </div>
-        <div class="polaroid bottom-right">
-            <img src="photos/photo4.jpg" alt="Memory 4">
-            <p>Confession day</p>
-        </div>
-        
-        <!-- Overlay Gift -->
-        <div class="gift-overlay" id="giftOverlay">🎁</div>
-    </div>
+<!-- Overlay Gift -->
+<div class="gift-overlay" id="giftOverlay">🎁</div>
 
-    <!-- Modal for Letters -->
-    <div class="modal" id="modal">
-        <div class="modal-content">
-            <span class="close" id="closeModal">&times;</span>
-            <div id="letterContent"></div>
-            <div class="next-gift" id="nextGift">
-                <button id="nextGiftBtn">Next Gift 🎁</button>
-            </div>
+</div>
+<!-- Modal for Letters -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <div id="letterContent"></div>
+        <div class="next-gift" id="nextGift">
+            <button id="nextGiftBtn">Next Gift 🎁</button>
         </div>
     </div>
+</div>
+<script>
+    let noClicks = 0;
+    let currentGift = 1;
+    let ambianceAudio;
+    let currentDubAudio;
+    const page1 = document.getElementById('page1');
+    const page2 = document.getElementById('page2');
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const startSounds = document.getElementById('startSounds');
+    const modal = document.getElementById('modal');
+    const letterContent = document.getElementById('letterContent');
+    const nextGift = document.getElementById('nextGift');
+    const nextGiftBtn = document.getElementById('nextGiftBtn');
+    const closeModal = document.getElementById('closeModal');
+    const giftOverlay = document.getElementById('giftOverlay');
 
-    <script>
-        let noClicks = 0;
-        let currentGift = 1;
-        let ambianceAudio;
-        let currentDubAudio;
-        let confettiInterval;
-        const page1 = document.getElementById('page1');
-        const page2 = document.getElementById('page2');
-        const yesBtn = document.getElementById('yesBtn');
-        const noBtn = document.getElementById('noBtn');
-        const startSounds = document.getElementById('startSounds');
-        const modal = document.getElementById('modal');
-        const letterContent = document.getElementById('letterContent');
-        const nextGift = document.getElementById('nextGift');
-        const nextGiftBtn = document.getElementById('nextGiftBtn');
-        const closeModal = document.getElementById('closeModal');
-        const giftOverlay = document.getElementById('giftOverlay');
-
-        // Continuous confetti function (love particles)
-        function startContinuousConfetti() {
-            confettiInterval = setInterval(() => {
-                for (let i = 0; i < 5; i++) { // Gentle rain
-                    const confetti = document.createElement('div');
-                    confetti.style.position = 'fixed';
-                    confetti.style.width = '8px';
-                    confetti.style.height = '8px';
-                    confetti.style.background = ['#ff69b4', '#ffb3d9', '#d63384', '#ff1493', '❤️'][Math.floor(Math.random() * 5)];
-                    confetti.style.left = Math.random() * 100 + 'vw';
-                    confetti.style.top = '-10px';
-                    confetti.style.animation = `fall ${3 + Math.random() * 2}s linear`;
-                    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
-                    document.body.appendChild(confetti);
-                    setTimeout(() => confetti.remove(), 5000);
-                }
-            }, 500); // Every 0.5 seconds
+    // Improved confetti function
+    function createConfetti() {
+        for (let i = 0; i < 100; i++) {
+            const confetti = document.createElement('div');
+            confetti.style.position = 'fixed';
+            confetti.style.width = '10px';
+            confetti.style.height = '10px';
+            confetti.style.background = ['#ff69b4', '#ffb3d9', '#d63384', '#ff1493'][Math.floor(Math.random() * 4)];
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.top = Math.random() * 100 + 'vh';
+            confetti.style.animation = `fall ${2 + Math.random() * 3}s linear`;
+            confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+            document.body.appendChild(confetti);
+            setTimeout(() => confetti.remove(), 5000);
         }
-        const style = document.createElement('style');
-        style.textContent = '@keyframes fall { to { transform: translateY(100vh) rotate(360deg); } }';
-        document.head.appendChild(style);
+    }
+    const style = document.createElement('style');
+    style.textContent = '@keyframes fall { to { transform: translateY(100vh) rotate(360deg); } }';
+    document.head.appendChild(style);
 
-        // Improved confetti function (for gift opening)
-        function createConfetti() {
-            for (let i = 0; i < 100; i++) {
-                const confetti = document.createElement('div');
-                confetti.style.position = 'fixed';
-                confetti.style.width = '10px';
-                confetti.style.height = '10px';
-                confetti.style.background = ['#ff69b4', '#ffb3d9', '#d63384', '#ff1493'][Math.floor(Math.random() * 4)];
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.top = Math.random() * 100 + 'vh';
-                confetti.style.animation = `fall ${2 + Math.random() * 3}s linear`;
-                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
-                document.body.appendChild(confetti);
-                setTimeout(() => confetti.remove(), 5000);
-            }
+    // Sound functions
+    function playSound(src) {
+        const audio = new Audio(src);
+        audio.play().catch(e => console.log('Sound blocked:', e));
+    }
+
+    // Start sounds button
+    startSounds.addEventListener('click', () => {
+        ambianceAudio = new Audio('music/ambiance.mp3');
+        ambianceAudio.loop = true;
+        ambianceAudio.volume = 0.05; // Much lower ambiance volume
+        ambianceAudio.play().catch(e => console.log('Ambiance blocked:', e));
+        startSounds.style.display = 'none';
+    });
+
+    // Page 1: NO makes YES bigger
+    noBtn.addEventListener('click', () => {
+        noClicks++;
+        const scale = 1 + noClicks * 0.3;
+        yesBtn.style.transform = `scale(${scale})`;
+    });
+
+    // Page 1: YES goes to Page 2
+    yesBtn.addEventListener('click', () => {
+        page1.classList.remove('active');
+        page2.classList.add('active');
+    });
+
+    // Modal close
+    closeModal.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    // Gift overlay click
+    giftOverlay.addEventListener('click', () => {
+        playSound('music/open.mp3');
+        modal.style.display = 'flex';
+        createConfetti();
+        showLetter(currentGift);
+    });
+
+    // Next gift button
+    nextGiftBtn.addEventListener('click', () => {
+        if (currentDubAudio) {
+            currentDubAudio.pause();
+            currentDubAudio.currentTime = 0;
         }
-
-        // Sound functions
-        function playSound(src) {
-            const audio = new Audio(src);
-            audio.play().catch(e => console.log('Sound blocked:', e));
-        }
-
-        // Start sounds button
-        startSounds.addEventListener('click', () => {
-            ambianceAudio = new Audio('music/ambiance.mp3');
-            ambianceAudio.loop = true;
-            ambianceAudio.volume = 0.05; // Much lower ambiance volume
-            ambianceAudio.play().catch(e => console.log('Ambiance blocked:', e));
-            startSounds.style.display = 'none';
-        });
-
-        // Page 1: NO makes YES bigger
-        noBtn.addEventListener('click', () => {
-            noClicks++;
-            const scale = 1 + noClicks * 0.3;
-            yesBtn.style.transform = `scale(${scale})`;
-        });
-
-        // Page 1: YES goes to Page 2
-        yesBtn.addEventListener('click', () => {
-            page1.classList.remove('active');
-            page2.classList.add('active');
-            startContinuousConfetti(); // Start continuous love particles
-        });
-
-        // Modal close
-        closeModal.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
-
-        // Gift overlay click
-        giftOverlay.addEventListener('click', () => {
-            playSound('music/open.mp3');
-            modal.style.display = 'flex';
-            createConfetti();
+        playSound('music/woosh.mp3');
+        currentGift++;
+        if (currentGift <= 11) {
             showLetter(currentGift);
-        });
+        } else {
+            modal.style.display = 'none';
+            giftOverlay.style.display = 'none';
+        }
+    });
 
-        // Next gift button
-        nextGiftBtn.addEventListener('click', () => {
-            if (currentDubAudio) {
-                currentDubAudio.pause();
-                currentDubAudio.currentTime = 0;
-            }
-            playSound('music/woosh.mp3');
-            currentGift++;
-            if (currentGift <= 11) {
-                showLetter(currentGift);
-            } else {
-                modal.style.display = 'none';
-                giftOverlay.style.display = 'none';
-            }
-        });
-
-        // Show letter function
-        function showLetter(giftNum) {
-            nextGift.style.display = 'none';
-            if (currentDubAudio) {
-                currentDubAudio.pause();
-                currentDubAudio.currentTime = 0;
-            }
-            currentDubAudio = new Audio(`music/Valentines${giftNum}.mp3`);
-            currentDubAudio.volume = 2.0; // Max dub volume
-            currentDubAudio.play().catch(e => console.log('Dub blocked:', e));
-            let html = '';
-            if (giftNum == 1) {
-                html = `
-                    <h2>🎁 Gift 1 — The Beginning</h2>
-                    <p>Dear Aini,</p>
-                    <p>10 November, 03:00.<br>I met you on Discord.</p>
-                    <p>You were there with your friends, playing together, and I somehow joined you guys.<br>Everyone was so friendly. We played Minecraft, laughed, and I tried to play some music…</p>
-                    <p>But I accidentally played a moaning sound.<br>I panicked. Left immediately.</p>
-                    <p>Still embarrassing. Still funny.</p>
-                    <p>That night felt simple, but somehow unforgettable.<br>I didn’t know it then, but that moment became the start of something special.</p>
-                `;
-            } else if (giftNum == 2) {
-                html = `
-                    <h2>🎁 Gift 2 — Fate</h2>
-                    <p>Dear Aini,</p>
-                    <p>If I didn’t join Discord that day,<br>If you guys didn’t play Minecraft,<br>If I didn’t come back after that embarrassing moment,<br>If I didn’t feel guilty enough to return—</p>
-                    <p>This part of my life might never have existed.</p>
-                    <p>Yet somehow, all of it happened.<br>And here we are today.</p>
-                    <p>Maybe it’s coincidence.<br>Maybe it’s fate.</p>
-                    <p>Either way—<br>I’m grateful.</p>
-                    <p>Thank you, Ais 🤍</p>
-                `;
-            } else if (giftNum == 3) {
-                html = `
-                    <h2>🎁 Gift 3 — Comfort</h2>
-                    <p>Dear Aini,</p>
-                    <p>You don’t even realize it,<br>but you make things feel lighter.</p>
-                    <p>Bad days don’t feel as heavy.<br>Silence doesn’t feel awkward.<br>Being myself feels safe.</p>
-                    <p>That’s rare.<br>And I don’t take it for granted.</p>
-                `;
-            } else if (giftNum == 4) {
-                html = `
-                    <h2>🎁 Gift 4 — Distance</h2>
-                    <p>Dear Ais,</p>
-                    <p>We’re not always in the same place.<br>Sometimes not even in the same time.</p>
-                    <p>But I still feel close to you.<br>Through screens, through words, through late nights.</p>
-                    <p>Maybe distance exists.<br>But so does us.</p>
-                    <p>And I think we’re doing okay.</p>
-                `;
-            } else if (giftNum == 5) {
-                html = `
-                    <h2>🎁 Gift 5 — Almost Losing You</h2>
-                    <p>Dear Ais,</p>
-                    <p>Do you remember that day?<br>27 January.</p>
-                    <p>It still hurts when I think about it.</p>
-                    <p>We almost broke up.<br>But you opened up.</p>
-                    <p>I didn’t know what to say.<br>I didn’t know how I could say something like that.</p>
-                    <p>I’m sorry, Ais.<br>Truly.</p>
-                `;
-            } else if (giftNum == 6) {
-                html = `
-                    <h2>🎁 Gift 6 — Our Favorite Food 😋</h2>
-                    <p>Your favorite food:<br>Ikan asam pedas 😜</p>
-                    <p>My favorite food:<br>Oseng kangkung ☺</p>
-                    <p>Simple things.<br>But somehow, it feels like us.</p>
-                `;
-            } else if (giftNum == 7) {
-                html = `
-                    <h2>🎁 Gift 7 — Confession Memory</h2>
-                    <p>Dear Ais,</p>
-                    <p>31 January 2025.<br>A new year.</p>
-                    <p>In a game called “Write a Letter”,<br>you confessed to me.</p>
-                    <p>Not dramatic.<br>Not perfect.</p>
-                    <p>Just honest.</p>
-                    <p>And that made it unforgettable.</p>
-                `;
-            } else if (giftNum == 8) {
-                html = `
-                    <h2>🎁 Gift 8 — Our Song 🎶</h2>
-                    <p>Our Favorite Song<br>“Oslo” — Matthew Hall</p>
-                    <p>Soft. Calm. Comforting.</p>
-                    <p>This song reminds me of you.<br>Like a memory that keeps playing,<br>over and over.</p>
-                    <div class="disc"></div>
-                    <audio controls autoplay>
-                        <source src="music/oslo.mp3" type="audio/mpeg">
-                        Your browser does not support the audio element.
-                    </audio>
-                `;
-            } else if (giftNum == 9) {
-                html = `
-                    <h2>🎁 Gift 9 — The Future</h2>
-                    <p>Dear Aini,</p>
-                    <p>I don’t know what the future looks like for us.</p>
-                    <p>It could be the dream of our lives.<br>Or it could be the end of a dream.</p>
-                    <p>Either one is okay—<br>as long as I’m with you,<br>as long as I’m living the moment with you.</p>
-                `;
-            } else if (giftNum == 10) {
-                html = `
-                    <h2>🎁 Gift 10 — We Will Meet</h2>
-                    <p>Dear Aini,</p>
-                    <p>One day, we will meet.</p>
-                    <p>Maybe not today.<br>But that day will come.</p>
-                    <p>Even if we separate.<br>Even if we’re not together anymore.</p>
-                    <p>We must meet at least once.</p>
-                `;
-            } else if (giftNum == 11) {
-                html = `
-                    <h2>🎁 Gift 11 — Healing (Final Letter)</h2>
-                    <p>Dear Aini,</p>
-                    <p>Oh… Ais.</p>
+    // Show letter function
+    function showLetter(giftNum) {
+        nextGift.style.display = 'none';
+        if (currentDubAudio) {
+            currentDubAudio.pause();
+            currentDubAudio.currentTime = 0;
+        }
+        currentDubAudio = new Audio(`music/Valentines${giftNum}.mp3`);
+        currentDubAudio.volume = 2.0; // Max dub volume
+        currentDubAudio.play().catch(e => console.log('Dub blocked:', e));
+        let html = '';
+        if (giftNum == 1) {
+            html = `
+                <h2>🎁 Gift 1 — The Beginning</h2>
+                <p>Dear Aini,</p>
+                <p>10 November, 03:00.<br>I met you on Discord.</p>
+                <p>You were there with your friends, playing together, and I somehow joined you guys.<br>Everyone was so friendly. We played Minecraft, laughed, and I tried to play some music…</p>
+                <p>But I accidentally played a moaning sound.<br>I panicked. Left immediately.</p>
+                <p>Still embarrassing. Still funny.</p>
+                <p>That night felt simple, but somehow unforgettable.<br>I didn’t know it then, but that moment became the start of something special.</p>
+            `;
+        } else if (giftNum == 2) {
+            html = `
+                <h2>🎁 Gift 2 — Fate</h2>
+                <p>Dear Aini,</p>
+                <p>If I didn’t join Discord that day,<br>If you guys didn’t play Minecraft,<br>If I didn’t come back after that embarrassing moment,<br>If I didn’t feel guilty enough to return—</p>
+                <p>This part of my life might never have existed.</p>
+                <p>Yet somehow, all of it happened.<br>And here we are today.</p>
+                <p>Maybe it’s coincidence.<br>Maybe it’s fate.</p>
+                <p>Either way—<br>I’m grateful.</p>
+                <p>Thank you, Ais 🤍</p>
+            `;
+        } else if (giftNum == 3) {
+            html = `
+                <h2>🎁 Gift 3 — Comfort</h2>
+                <p>Dear Aini,</p>
+                <p>You don’t even realize it,<br>but you make things feel lighter.</p>
+                <p>Bad days don’t feel as heavy.<br>Silence doesn’t feel awkward.<br>Being myself feels safe.</p>
+                <p>That’s rare.<br>And I don’t take it for granted.</p>
+            `;
+        } else if (giftNum == 4) {
+            html = `
+                <h2>🎁 Gift 4 — Distance</h2>
+                <p>Dear Ais,</p>
+                <p>We’re not always in the same place.<br>Sometimes not even in the same time.</p>
+                <p>But I still feel close to you.<br>Through screens, through words, through late nights.</p>
+                <p>Maybe distance exists.<br>But so does us.</p>
+                <p>And I think we’re doing okay.</p>
+            `;
+        } else if (giftNum == 5) {
+            html = `
+                <h2>🎁 Gift 5 — Almost Losing You</h2>
+                <p>Dear Ais,</p>
+                <p>Do you remember that day?<br>27 January.</p>
+                <p>It still hurts when I think about it.</p>
+                <p>We almost broke up.<br>But you opened up.</p>
+                <p>I didn’t know what to say.<br>I didn’t know how I could say something like that.</p>
+                <p>I’m sorry, Ais.<br>Truly.</p>
+            `;
+        } else if (giftNum == 6) {
+            html = `
+                <h2>🎁 Gift 6 — Our Favorite Food 😋</h2>
+                <p>Your favorite food:<br>Ikan asam pedas 😜</p>
+                <p>My favorite food:<br>Oseng kangkung ☺</p>
+                <p>Simple things.<br>But somehow, it feels like us.</p>
+            `;
+        } else if (giftNum == 7) {
+            html = `
+                <h2>🎁 Gift 7 — Confession Memory</h2>
+                <p>Dear Ais,</p>
+                <p>31 January 2025.<br>A new year.</p>
+                <p>In a game called “Write a Letter”,<br>you confessed to me.</p>
+                <p>Not dramatic.<br>Not perfect.</p>
+                <p>Just honest.</p>
+                <p>And that made it unforgettable.</p>
+            `;
+        } else if (giftNum == 8) {
+            html = `
+                <h2>🎁 Gift 8 — Our Song 🎶</h2>
+                <p>Our Favorite Song<br>“Oslo” — Matthew Hall</p>
+                <p>Soft. Calm. Comforting.</p>
+                <p>This song reminds me of you.<br>Like a memory that keeps playing,<br>over and over.</p>
+                <div class="disc"></div>
+                <audio controls autoplay>
+                    <source src="music/oslo.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            `;
+        } else if (giftNum == 9) {
+            html = `
+                <h2>🎁 Gift 9 — The Future</h2>
+                <p>Dear Aini,</p>
+                <p>I don’t know what the future looks like for us.</p>
+                <p>It could be the dream of our lives.<br>Or it could be the end of a dream.</p>
+                <p>Either one is okay—<br>as long as I’m with you,<br>as long as I’m living the moment with you.</p>
+            `;
+        } else if (giftNum == 10) {
+            html = `
+                <h2>🎁 Gift 10 — We Will Meet</h2>
+                <p>Dear Aini,</p>
+                <p>One day, we will meet.</p>
+                <p>Maybe not today.<br>But that day will come.</p>
+                <p>Even if we separate.<br>Even if we’re not together anymore.</p>
+                <p>We must meet at least once.</p>
+            `;
+        } else if (giftNum == 11) {
+            html = `
+                <h2>🎁 Gift 11 — Healing (Final Letter)</h2>
+                <p>Dear Aini,</p>
+                <p>Oh… Ais.</p>
                 <p>You were the best thing I ever hoped for.<br>You came at the right time—<br>when I was desperate,<br>when everything in my life was falling apart.</p>
                 <p>My life was going sideways.</p>
                 <p>Then you came.<br>You fixed me.<br>You made me positive again.</p>
